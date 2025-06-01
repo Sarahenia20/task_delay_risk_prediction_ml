@@ -764,58 +764,6 @@
     </div>
 
     <script>
-        // Configuration - Simple localhost setup for testing
-        // For local testing, we'll connect directly to your Flask server
-      // With this intelligent cloud-ready configuration:
-const BACKEND_URL = window.location.hostname === 'localhost' 
-    ? 'http://localhost:5000'  // Local development
-    : '/api';                  // Production on Vercel
-
-        // Initialize on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            checkBackendConnection();
-            updateAllSliders();
-        });
-
-        // Tab switching
-        function showTab(tabName) {
-            // Hide all tabs
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            
-            // Remove active from all buttons
-            document.querySelectorAll('.tab-button').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            
-            // Show selected tab and activate button
-            document.getElementById(tabName).classList.add('active');
-            event.target.classList.add('active');
-        }
-
-        // Update slider values
-        function updateValue(sliderId) {
-            const slider = document.getElementById(sliderId);
-            const valueDisplay = document.getElementById(sliderId + '-value');
-            
-            if (sliderId.includes('workload')) {
-                valueDisplay.textContent = slider.value + '%';
-            } else if (sliderId.includes('experience')) {
-                valueDisplay.textContent = slider.value + ' years';
-            } else if (sliderId.includes('duration')) {
-                valueDisplay.textContent = slider.value + ' days';
-            } else {
-                valueDisplay.textContent = slider.value;
-            }
-        }
-
-        function updateAllSliders() {
-            document.querySelectorAll('.slider').forEach(slider => {
-                updateValue(slider.id);
-            });
-        }
-
         // Backend connection check
         async function checkBackendConnection() {
             const statusElement = document.getElementById('backend-status');
@@ -825,13 +773,13 @@ const BACKEND_URL = window.location.hostname === 'localhost'
                 const data = await response.json();
                 
                 if (data.status === 'healthy') {
-                    statusElement.innerHTML = '✅ Backend connected! XGBoost and SVM models ready.';
+                    statusElement.innerHTML = '✅ Backend connected! XGBoost and SVM models ready on Render.';
                     statusElement.className = 'backend-status';
                 } else {
                     throw new Error('Backend not healthy');
                 }
             } catch (error) {
-                statusElement.innerHTML = '❌ Backend not connected. Please start your Flask server at http://localhost:5000';
+                statusElement.innerHTML = '❌ Backend not connected. Render deployment may still be starting up...';
                 statusElement.className = 'backend-status error';
                 console.error('Backend connection error:', error);
             }
@@ -849,7 +797,7 @@ const BACKEND_URL = window.location.hostname === 'localhost'
             };
         }
 
-        // Show/hide loading and errors
+        // Show/hide loading states and errors
         function showLoading(prefix, show) {
             const loading = document.getElementById(`${prefix}-loading`);
             const button = document.getElementById(`${prefix}-btn`);
@@ -873,7 +821,7 @@ const BACKEND_URL = window.location.hostname === 'localhost'
             document.getElementById('error-message').style.display = 'none';
         }
 
-        // XGBoost prediction
+        // XGBoost prediction function
         async function predictXGBoost() {
             const inputData = extractFormData('xgb');
             showLoading('xgb', true);
@@ -925,7 +873,7 @@ const BACKEND_URL = window.location.hostname === 'localhost'
             resultCard.scrollIntoView({ behavior: 'smooth' });
         }
 
-        // SVM prediction
+        // SVM prediction function
         async function predictSVM() {
             const inputData = extractFormData('svm');
             showLoading('svm', true);
@@ -979,7 +927,7 @@ const BACKEND_URL = window.location.hostname === 'localhost'
             resultCard.scrollIntoView({ behavior: 'smooth' });
         }
 
-        // Compare models
+        // Compare models function
         async function compareModels() {
             const inputData = extractFormData('comp');
             showLoading('comp', true);
@@ -1052,4 +1000,55 @@ const BACKEND_URL = window.location.hostname === 'localhost'
         }
     </script>
 </body>
-</html>
+</html> Railway-optimized URL configuration
+        // This automatically detects whether you're testing locally or running on Railway
+        const BACKEND_URL = window.location.hostname === 'localhost' 
+            ? 'http://localhost:5000'      // Local development with your Flask server
+            : window.location.origin;      // Production on Railway (same domain as frontend)
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            checkBackendConnection();
+            updateAllSliders();
+        });
+
+        // Tab switching functionality
+        function showTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove active from all buttons
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab and activate button
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // Update slider value displays
+        function updateValue(sliderId) {
+            const slider = document.getElementById(sliderId);
+            const valueDisplay = document.getElementById(sliderId + '-value');
+            
+            if (sliderId.includes('workload')) {
+                valueDisplay.textContent = slider.value + '%';
+            } else if (sliderId.includes('experience')) {
+                valueDisplay.textContent = slider.value + ' years';
+            } else if (sliderId.includes('duration')) {
+                valueDisplay.textContent = slider.value + ' days';
+            } else {
+                valueDisplay.textContent = slider.value;
+            }
+        }
+
+        function updateAllSliders() {
+            document.querySelectorAll('.slider').forEach(slider => {
+                updateValue(slider.id);
+            });
+        }
+
+        //
