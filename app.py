@@ -386,10 +386,17 @@ def health_check():
         'message': 'Taskify ML service ready with XGBoost and SVM models'
     })
 
+# Production-ready configuration for Vercel deployment
+app.config['DEBUG'] = False
+
 if __name__ == '__main__':
+    # Local development mode - when you run 'python app.py'
     print("🚀 Starting Taskify ML Backend...")
-    print("✅ XGBoost and SVM models loaded!")
+    print("📊 Loading XGBoost and SVM models...")
+    print("✅ Both models loaded and ready!")
     print("🌐 Backend running at: http://localhost:5000")
-    print("🧪 Test at: http://localhost:5000/test")
-    
     app.run(debug=True, host='0.0.0.0', port=5000)
+else:
+    # Production deployment mode - when Vercel runs your app
+    # This line is crucial for Vercel to recognize your Flask application
+    application = app

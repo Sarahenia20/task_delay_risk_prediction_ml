@@ -766,7 +766,10 @@
     <script>
         // Configuration - Simple localhost setup for testing
         // For local testing, we'll connect directly to your Flask server
-        const BACKEND_URL = 'http://localhost:5000';
+      // With this intelligent cloud-ready configuration:
+const BACKEND_URL = window.location.hostname === 'localhost' 
+    ? 'http://localhost:5000'  // Local development
+    : '/api';                  // Production on Vercel
 
         // Initialize on page load
         document.addEventListener('DOMContentLoaded', function() {
